@@ -24,27 +24,22 @@ public class Movimiento {
   }
 
   public boolean fueDepositado(LocalDate fecha) {
-    return isDeposito() && esDeLaFecha(fecha);
+    return esDeposito && esDeLaFecha(fecha);
   }
 
   public boolean fueExtraido(LocalDate fecha) {
-    return isExtraccion() && esDeLaFecha(fecha);
+    return !esDeposito && esDeLaFecha(fecha);
   }
 
   public boolean esDeLaFecha(LocalDate fecha) {
     return this.fecha.equals(fecha);
   }
 
-  public boolean isDeposito() {
-    return esDeposito;
-  }
 // El metodo isExtraccion() es innecesario ya que puedo negar isDeposito  DUPLICATED CODE
-  public boolean isExtraccion() {
-    return !esDeposito;
-  }
-
+// Y nose si es un code smell peero no haria falta el metodo isDeposito, podria usar directamente esDeposito
 
   //Los metodos agregateA y calcularValor estan mal ubicados ya que deberian ir en la clase cuenta MISPLACED METHODS
+  // Estos metodos los paso a la clase cuenta
   public void agregateA(Cuenta cuenta) {
     cuenta.setSaldo(calcularValor(cuenta));
     cuenta.agregarMovimiento(fecha, monto, esDeposito);
