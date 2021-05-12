@@ -28,7 +28,6 @@ public class MonederoTest {
     assertEquals(cuenta.getSaldo(), 1500);
   }
 
-
   @Test
   void PonerMontoNegativo() {
     assertThrows(MontoNegativoException.class, () -> cuenta.poner(-1500));
