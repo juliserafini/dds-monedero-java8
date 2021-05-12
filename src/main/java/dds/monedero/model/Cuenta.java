@@ -39,7 +39,7 @@ public class Cuenta {
     chequearMontoNegativo(cuanto);
     chequearSaldoMenor(cuanto);
     chequearElLimite(cuanto);
-    Movimiento nuevoMov = new Movimiento(LocalDate.now(), cuanto, true);
+    Movimiento nuevoMov = new Movimiento(LocalDate.now(), cuanto, false);
     agregarMovimiento(nuevoMov);
   }
 
@@ -65,7 +65,7 @@ public class Cuenta {
   public List<Movimiento> getMovimientos() {
     return movimientos;
   }
-
+//
   public double getSaldo() {
     return saldo;
   }

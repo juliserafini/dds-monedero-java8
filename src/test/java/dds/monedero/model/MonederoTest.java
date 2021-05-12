@@ -7,20 +7,27 @@ import dds.monedero.exceptions.SaldoMenorException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MonederoTest {
   private Cuenta cuenta;
-
+  private LocalDate fecha = LocalDate.of(2022, 01, 24);
+  private Movimiento movimientoNoDeposito = new Movimiento(fecha, 1200, false);
+  private Movimiento movimientoDeposito = new Movimiento(fecha, 400, true);
   @BeforeEach
   void init() {
     cuenta = new Cuenta();
   }
 
   @Test
-  void Poner() {
+  void PonerSaldoEnUnaCuenta() {
     cuenta.poner(1500);
+    assertEquals(cuenta.getSaldo(), 1500);
   }
+
 
   @Test
   void PonerMontoNegativo() {
@@ -28,10 +35,11 @@ public class MonederoTest {
   }
 
   @Test
-  void TresDepositos() {
+  void HacerTresDepositos() {
     cuenta.poner(1500);
     cuenta.poner(456);
     cuenta.poner(1900);
+    assertEquals(cuenta.getSaldo(), 3856);
   }
 
   @Test
@@ -64,5 +72,35 @@ public class MonederoTest {
   public void ExtraerMontoNegativo() {
     assertThrows(MontoNegativoException.class, () -> cuenta.sacar(-500));
   }
+
+  @Test
+  public void SacarDineroDeUnaCuentaCon2000(){
+    cuenta.poner(2000);
+    cuenta.sacar(800);
+    assertEquals(cuenta.getSaldo(), 1200);
+  }
+  @Test
+  public void AgregarUnMovimientoQueSeExtrajoAUnaCuentaCon2000deSaldo(){
+    cuenta.setSaldo(2000);
+    cuenta.agregarMovimiento(movimientoNoDeposito);
+    assertEquals(cuenta.getMontoExtraidoA(fecha), 1200);
+  }
+
+  @Test
+  public void AgregarUnMovimientoQueEsDepositoAUnaCuentaCon1000deSaldo(){
+    cuenta.setSaldo(1000);
+    cuenta.agregarMovimiento(movimientoDeposito);
+    assertEquals(cuenta.getSaldo(), 1400);
+  }
+
+  @Test
+  public void VerificarQueUnMovimientoEstaEnLaCuenta(){
+    cuenta.agregarMovimiento(movimientoNoDeposito);
+    assertTrue(cuenta.getMovimientos().contains(movimientoNoDeposito));
+  }
+
+
+
+
 
 }
