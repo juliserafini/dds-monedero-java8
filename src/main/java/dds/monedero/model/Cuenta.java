@@ -27,32 +27,20 @@ public class Cuenta {
     this.movimientos = movimientos;
   }
 // Los metodos sacar y poner repiten codigo y ambos son metodos largos que se pueden descomponer DUPLICATED CODE y LONG METHOD
+
   public void poner(double cuanto) {
-    if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
-    }
-
-    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {
-      throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
-    }
-
-    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);
+    chequearMontoNegativo(cuanto);
+    chequearMaximaCntDepositos();
+    Movimiento nuevoMov = new Movimiento(LocalDate.now(), cuanto, true);
+    agregarMovimiento(nuevoMov);
   }
 
   public void sacar(double cuanto) {
-    if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
-    }
-    if (getSaldo() - cuanto < 0) {
-      throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
-    }
-    double montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
-    double limite = 1000 - montoExtraidoHoy;
-    if (cuanto > limite) {
-      throw new MaximoExtraccionDiarioException("No puede extraer mas de $ " + 1000
-          + " diarios, límite: " + limite);
-    }
-    new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);
+    chequearMontoNegativo(cuanto);
+    chequearSaldoMenor(cuanto);
+    chequearElLimite(cuanto);
+    Movimiento nuevoMov = new Movimiento(LocalDate.now(), cuanto, true);
+    agregarMovimiento(nuevoMov);
   }
 
   public void agregarMovimiento(Movimiento movimiento) {
@@ -84,6 +72,30 @@ public class Cuenta {
 
   public void setSaldo(double saldo) {
     this.saldo = saldo;
+  }
+
+  public void chequearMontoNegativo(double cuanto){
+    if (cuanto <= 0) {
+      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
+    }
+  }
+  public void chequearMaximaCntDepositos(){
+    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {
+      throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
+    }
+  }
+  public void chequearSaldoMenor(double cuanto){
+    if (getSaldo() - cuanto < 0) {
+      throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
+    }
+  }
+  public void chequearElLimite(double cuanto){
+    double montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
+    double limite = 1000 - montoExtraidoHoy;
+    if (cuanto > limite) {
+      throw new MaximoExtraccionDiarioException("No puede extraer mas de $ " + 1000
+          + " diarios, límite: " + limite);
+    }
   }
 
 }
