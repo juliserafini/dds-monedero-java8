@@ -22,7 +22,7 @@ public class Movimiento {
   public LocalDate getFecha() {
     return fecha;
   }
-
+// fueDepositado y fueExtraido nunca los esta utilizando
   public boolean fueDepositado(LocalDate fecha) {
     return esDeposito && esDeLaFecha(fecha);
   }
