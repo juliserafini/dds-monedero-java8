@@ -11,9 +11,10 @@ import java.util.List;
 
 public class Cuenta {
 
-  private double saldo = 0;
+  private double saldo;
   private List<Movimiento> movimientos = new ArrayList<>();
 
+  //El atributo saldo lo inicializa dos veces y por eso lo deje solo dentro del constructor
   public Cuenta() {
     saldo = 0;
   }
@@ -25,7 +26,7 @@ public class Cuenta {
   public void setMovimientos(List<Movimiento> movimientos) {
     this.movimientos = movimientos;
   }
-
+// Los metodos sacar y poner repiten codigo y ambos son metodos largos que se pueden descomponer DUPLICATED CODE y LONG METHOD
   public void poner(double cuanto) {
     if (cuanto <= 0) {
       throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
@@ -58,7 +59,7 @@ public class Cuenta {
     Movimiento movimiento = new Movimiento(fecha, cuanto, esDeposito);
     movimientos.add(movimiento);
   }
-
+// El metodo getMontoExtraido tambien comete un code smell de tipo LONG METHOD dentro del filter y FEATURE ENVY ya que toca muchas veces el movimiento
   public double getMontoExtraidoA(LocalDate fecha) {
     return getMovimientos().stream()
         .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))

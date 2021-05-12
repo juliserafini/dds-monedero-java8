@@ -38,11 +38,13 @@ public class Movimiento {
   public boolean isDeposito() {
     return esDeposito;
   }
-
+// El metodo isExtraccion() es innecesario ya que puedo negar isDeposito  DUPLICATED CODE
   public boolean isExtraccion() {
     return !esDeposito;
   }
 
+
+  //Los metodos agregateA y calcularValor estan mal ubicados ya que deberian ir en la clase cuenta MISPLACED METHODS
   public void agregateA(Cuenta cuenta) {
     cuenta.setSaldo(calcularValor(cuenta));
     cuenta.agregarMovimiento(fecha, monto, esDeposito);
