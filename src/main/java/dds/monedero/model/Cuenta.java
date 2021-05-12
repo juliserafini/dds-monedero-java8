@@ -55,9 +55,16 @@ public class Cuenta {
     new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);
   }
 
-  public void agregarMovimiento(LocalDate fecha, double cuanto, boolean esDeposito) {
-    Movimiento movimiento = new Movimiento(fecha, cuanto, esDeposito);
+  public void agregarMovimiento(Movimiento movimiento) {
     movimientos.add(movimiento);
+    calcularValor(movimiento);
+
+  }
+  public void calcularValor(Movimiento movimiento) {
+    if (movimiento.isDeposito()) { saldo +=  movimiento.getMonto();
+    } else {
+      saldo -=  movimiento.getMonto();
+    }
   }
 // El metodo getMontoExtraido tambien comete un code smell de tipo LONG METHOD dentro del filter y FEATURE ENVY ya que toca muchas veces el movimiento
   public double getMontoExtraidoA(LocalDate fecha) {

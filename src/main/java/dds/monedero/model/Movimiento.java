@@ -40,16 +40,5 @@ public class Movimiento {
 
   //Los metodos agregateA y calcularValor estan mal ubicados ya que deberian ir en la clase cuenta MISPLACED METHODS
   // Estos metodos los paso a la clase cuenta
-  public void agregateA(Cuenta cuenta) {
-    cuenta.setSaldo(calcularValor(cuenta));
-    cuenta.agregarMovimiento(fecha, monto, esDeposito);
-  }
 
-  public double calcularValor(Cuenta cuenta) {
-    if (esDeposito) {
-      return cuenta.getSaldo() + getMonto();
-    } else {
-      return cuenta.getSaldo() - getMonto();
-    }
-  }
 }
