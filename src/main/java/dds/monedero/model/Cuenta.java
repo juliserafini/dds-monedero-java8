@@ -57,7 +57,7 @@ public class Cuenta {
 // El metodo getMontoExtraido tambien comete un code smell de tipo LONG METHOD dentro del filter y FEATURE ENVY ya que toca muchas veces el movimiento
   public double getMontoExtraidoA(LocalDate fecha) {
     return getMovimientos().stream()
-        .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))
+        .filter(movimiento -> movimiento.fueExtraido(fecha))
         .mapToDouble(Movimiento::getMonto)
         .sum();
   }
